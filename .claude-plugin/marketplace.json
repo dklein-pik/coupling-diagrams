@@ -2,7 +2,7 @@
   "name": "pik-coupling-diagrams",
   "description": "Claude Code plugins of the PIK REMIND community for documenting model couplings.",
   "owner": {
-    "name": "pik-piam"
+    "name": "dklein-pik"
   },
   "plugins": [
     {

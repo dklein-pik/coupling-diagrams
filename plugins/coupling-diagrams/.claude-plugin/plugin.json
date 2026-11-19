@@ -6,6 +6,6 @@
     "name": "David Klein",
     "email": "david.klein@pik-potsdam.de"
   },
-  "repository": "https://github.com/pik-piam/coupling-diagrams",
+  "repository": "https://github.com/dklein-pik/coupling-diagrams",
   "keywords": ["REMIND", "MAgPIE", "coupling", "diagram", "pptx", "documentation"]
 }

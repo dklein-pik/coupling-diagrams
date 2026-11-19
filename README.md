@@ -16,11 +16,11 @@ REMIND-MAgPIE diagram as a worked example.
 In a terminal (Claude Code installed, git on PATH):
 
 ```
-claude plugin marketplace add pik-piam/coupling-diagrams
+claude plugin marketplace add dklein-pik/coupling-diagrams
 claude plugin install coupling-diagrams@pik-coupling-diagrams
 ```
 
-or inside a Claude Code session: `/plugin marketplace add pik-piam/coupling-diagrams`, then
+or inside a Claude Code session: `/plugin marketplace add dklein-pik/coupling-diagrams`, then
 `/plugin install coupling-diagrams@pik-coupling-diagrams`.
 Updates: `claude plugin update coupling-diagrams@pik-coupling-diagrams` (auto-update is off by default for this
 marketplace; enable it under `/plugin` -> Marketplaces).
