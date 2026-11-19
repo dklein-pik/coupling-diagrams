@@ -1,0 +1,11 @@
+{
+  "name": "coupling-diagrams",
+  "version": "0.1.0",
+  "description": "Code-linked structure diagrams of REMIND model couplings and data flows: editable PPTX slide plus interactive HTML page with links and hover excerpts of pinned source lines.",
+  "author": {
+    "name": "David Klein",
+    "email": "david.klein@pik-potsdam.de"
+  },
+  "repository": "https://github.com/pik-piam/coupling-diagrams",
+  "keywords": ["REMIND", "MAgPIE", "coupling", "diagram", "pptx", "documentation"]
+}

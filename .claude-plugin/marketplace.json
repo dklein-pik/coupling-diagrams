@@ -1,0 +1,14 @@
+{
+  "name": "pik-coupling-diagrams",
+  "description": "Claude Code plugins of the PIK REMIND community for documenting model couplings.",
+  "owner": {
+    "name": "pik-piam"
+  },
+  "plugins": [
+    {
+      "name": "coupling-diagrams",
+      "source": "./plugins/coupling-diagrams",
+      "description": "Code-linked structure diagrams of REMIND model couplings and data flows (PPTX + interactive HTML)."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# machine-specific paths of the local repository clones
+local_paths.json
+# temporary files
+__pycache__/
+_measure/
+_preview/
+*.pyc
