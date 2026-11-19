@@ -9,7 +9,7 @@ from . import styles as S
 
 
 class Canvas:
-    """Collects drawing primitives ("rect", "text", "arrow") for the PPTX and HTML backends.
+    """Collects drawing primitives ("rect", "text", "para", "arrow") for the PPTX and HTML backends.
 
     Attributes a layout script may set while drawing:
       off_y   vertical offset added to everything drawn next (move a whole section as a block)
@@ -37,14 +37,31 @@ class Canvas:
         self.prims.append(prim)
         self.targets.append(self.target)
 
-    def text(self, x, y, s, size=11.5, bold=False, family=S.FONT, anchor="start", color="#202020", italic=False):
-        size = self.norm_size(size)
+    def text(self, x, y, s, size=11.5, bold=False, family=S.FONT, anchor="start", color="#202020", italic=False,
+             exact=False):
+        """exact=True keeps the size as given (e.g. a figure subtitle) instead of mapping it to a size level."""
+        size = size if exact else self.norm_size(size)
         y = y + self.off_y
         self._add(("text", x, y, s, size, bold, family, color, italic))
         self._svg.append(
             f'<text x="{x}" y="{y}" font-family="{family}" font-size="{size}"'
             f'{" font-weight=\"bold\"" if bold else ""}{" font-style=\"italic\"" if italic else ""}'
             f' fill="{color}" text-anchor="{anchor}">{escape(s)}</text>')
+
+    def para(self, x, y, w, h, s, size=11.5, bold=False, family=S.FONT, color="#202020", step=None):
+        """Paragraph wrapped automatically to width w (HTML: foreignObject, PPTX: wrapping text box).
+
+        y is the top of the box, h its height, step the line distance in px (default 1.3 * size); "
+" forces a
+        line break; no code links.
+        """
+        step = step or round(1.3 * size, 2)
+        y = y + self.off_y
+        self._add(("para", x, y, w, h, s, size, bold, family, color, step))
+        self._svg.append(
+            f'<foreignObject x="{x}" y="{y}" width="{w}" height="{h}"><div xmlns="http://www.w3.org/1999/xhtml" '
+            f'style="font-family:{family};font-size:{size}px;line-height:{step}px;color:{color}'
+            f'{";font-weight:bold" if bold else ""}">{escape(s).replace(chr(10), "<br/>")}</div></foreignObject>')
 
     def ctext(self, cx, y, s, size=10, **kw):
         """Text centred at cx (width estimated, since the PPTX backend has no text anchor)."""
@@ -107,7 +124,7 @@ class Canvas:
     def crop_top(self, dy):
         """Move everything up by dy and reduce the canvas height accordingly."""
         for k, pr in enumerate(self.prims):
-            if pr[0] in ("text", "rect"):
+            if pr[0] in ("text", "rect", "para"):
                 self.prims[k] = pr[:2] + (pr[2] - dy,) + pr[3:]
             elif pr[0] == "arrow":
                 self.prims[k] = (pr[0], [(px, py - dy) for px, py in pr[1]]) + pr[2:]

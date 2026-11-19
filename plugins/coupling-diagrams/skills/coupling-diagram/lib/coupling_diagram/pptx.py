@@ -49,6 +49,18 @@ def shapes_xml(prims):
                 f' b="{1 if bold else 0}" i="{1 if italic else 0}" dirty="0">{fill_xml(color)}'
                 f'<a:latin typeface="{family}"/><a:cs typeface="{family}"/></a:rPr>'
                 f'<a:t>{escape(s)}</a:t></a:r></a:p></p:txBody></p:sp>')
+        elif pr[0] == "para":     # wrapped by PowerPoint, exact line distance
+            _, x, y, w, h, s, size, bold, family, color, step = pr
+            rpr = (f'<a:rPr lang="en-US" sz="{int(round(size * 75))}" b="{1 if bold else 0}" dirty="0">{fill_xml(color)}'
+                   f'<a:latin typeface="{family}"/><a:cs typeface="{family}"/></a:rPr>')
+            runs = f'<a:br>{rpr}</a:br>'.join(f'<a:r>{rpr}<a:t>{escape(ln)}</a:t></a:r>' for ln in s.split("\n"))
+            parts.append(
+                f'<p:sp><p:nvSpPr><p:cNvPr id="{sid}" name="Text {sid}"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr>'
+                f'<p:spPr><a:xfrm><a:off x="{e(x)}" y="{e(y)}"/><a:ext cx="{e(w)}" cy="{e(h)}"/></a:xfrm>'
+                f'<a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>'
+                f'<p:txBody><a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" anchor="t"><a:noAutofit/></a:bodyPr>'
+                f'<a:lstStyle/><a:p><a:pPr algn="l"><a:lnSpc><a:spcPts val="{int(round(step * 75))}"/></a:lnSpc></a:pPr>'
+                f'{runs}</a:p></p:txBody></p:sp>')
         elif pr[0] == "arrow":
             _, pts, color, dash, width = pr
             xs, ys = [p[0] for p in pts], [p[1] for p in pts]

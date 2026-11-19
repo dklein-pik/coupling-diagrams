@@ -107,6 +107,11 @@ def write(path, prims, W, H, table, title="Coupling diagram", note_xy=None, auth
                 pos = j
             parts.append(escape(s[pos:]))
             svg.append(f'<text {attrs} xml:space="preserve">{"".join(parts)}</text>')
+        elif pr[0] == "para":     # wrapped by the browser
+            _, x, y, w, h, s, size, bold, family, color, step = pr
+            svg.append(f'<foreignObject x="{x}" y="{y}" width="{w}" height="{h}"><div xmlns="http://www.w3.org/1999/xhtml" '
+                       f'style="font-family:{escape(family)};font-size:{size}px;line-height:{step}px;color:{dark(color)}'
+                       f'{";font-weight:bold" if bold else ""}">{escape(s).replace(chr(10), "<br/>")}</div></foreignObject>')
 
     unused = [spec[0] for spec in table.links if id(spec) not in used]
     if unused:
