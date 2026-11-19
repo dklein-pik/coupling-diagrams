@@ -9,8 +9,10 @@ from coupling_diagram import LinkTable, Repo
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPOS = [
-    Repo("remind", "https://github.com/remindmodel/remind", "be7130269a4a6acb6dc56698a0e50c96c35e2f32"),
-    Repo("magpie", "https://github.com/magpiemodel/magpie", "fcbd591df88eb2a27fb255421943b3d819d23696"),   # MAgPIE 4.14.2
+    Repo("remind", "https://github.com/remindmodel/remind", "be7130269a4a6acb6dc56698a0e50c96c35e2f32",
+         tag="v3.7.1"),
+    Repo("magpie", "https://github.com/magpiemodel/magpie", "fcbd591df88eb2a27fb255421943b3d819d23696",
+         tag="v4.14.2"),
     Repo("remind2", "https://github.com/pik-piam/remind2", "e414aecde1eb0ce334c2424367617d711374ea09"),    # remind2 2.9.0
 ]
 RELABEL = {}   # text replacements applied to the HTML only

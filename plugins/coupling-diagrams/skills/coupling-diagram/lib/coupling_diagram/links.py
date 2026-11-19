@@ -17,17 +17,34 @@ import subprocess
 
 
 class Repo:
-    def __init__(self, name, url, commit):
-        self.name, self.url, self.commit = name, url, commit
+    """Repository pinned to a commit; with a tag, the GitHub links use the tag (readable version) instead."""
+
+    def __init__(self, name, url, commit, tag=None):
+        self.name, self.url, self.commit, self.tag = name, url, commit, tag
         self.local = None
         self._cache = {}
+        self._checked = False
+
+    @property
+    def ref(self):
+        """Name used in the GitHub links: the tag if given, else the commit."""
+        return self.tag or self.commit
+
+    def _check_clone(self):
+        if not self.local:
+            raise RuntimeError(f"no local clone configured for repository '{self.name}' "
+                               f"(set COUPLING_DIAGRAM_{self.name.upper()} or add it to the local paths file)")
+        if self.tag and not self._checked:   # the link (tag) must show the same file version as the excerpt (commit)
+            out = subprocess.run(["git", "-C", self.local, "rev-parse", f"{self.tag}^{{commit}}"],
+                                 capture_output=True, text=True)
+            if out.returncode or out.stdout.strip() != self.commit:
+                raise ValueError(f"{self.name}: tag {self.tag} does not point to commit {self.commit} in {self.local}")
+            self._checked = True
 
     def lines(self, path):
         """File content at the pinned commit (via git show in the local clone)."""
         if path not in self._cache:
-            if not self.local:
-                raise RuntimeError(f"no local clone configured for repository '{self.name}' "
-                                   f"(set COUPLING_DIAGRAM_{self.name.upper()} or add it to the local paths file)")
+            self._check_clone()
             out = subprocess.run(["git", "-C", self.local, "show", f"{self.commit}:{path}"],
                                  capture_output=True, check=True)
             self._cache[path] = out.stdout.decode("utf-8", "replace").splitlines()

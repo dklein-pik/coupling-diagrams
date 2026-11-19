@@ -82,7 +82,8 @@ and Edge or Chrome for previews and text measurement (`COUPLING_DIAGRAM_BROWSER`
 
 ## Links (HTML)
 
-- `links.py` defines `Repo(name, url, commit)` per repository and the link entries
+- `links.py` defines `Repo(name, url, commit, tag=None)` per repository (with a tag, the GitHub links use the tag;
+  the build checks that the tag points to the commit) and the link entries
   `(pattern, ref, call_ref, condition)`; see `lib/coupling_diagram/links.py`. Full-line patterns first.
 - The name links to the **call site** (or the code); if a call site exists, the "↪" marker links to the
   **definition**. Hover shows the lines with 5 context lines, linked lines highlighted, header `repo/path Lx-y @commit`.

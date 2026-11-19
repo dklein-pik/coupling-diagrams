@@ -46,7 +46,7 @@ cp local_paths.example.json local_paths.json      # then enter the paths of your
 python -I figure.py remind_magpie.pptx remind_magpie.html
 ```
 
-The example links to REMIND `be71302`, MAgPIE 4.14.2 (`fcbd591`) and remind2 2.9.0 (`e414aec`); these commits must
+The example links to REMIND 3.7.1 (`be71302`), MAgPIE 4.14.2 (`fcbd591`) and remind2 2.9.0 (`e414aec`); these commits must
 exist in your clones.
 
 ## Layout

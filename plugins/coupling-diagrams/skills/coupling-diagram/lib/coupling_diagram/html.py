@@ -24,7 +24,7 @@ def ref_info(table, ref, role):
     r = table.repos[repo]
     lines = r.lines(path)                 # also verifies that the file exists at the commit
     plain = "?plain=1" if path.endswith((".csv", ".md")) else ""
-    url = f'{r.url}/blob/{r.commit}/{path}{plain}'
+    url = f'{r.url}/blob/{r.ref}/{path}{plain}'
     if a:
         if b > len(lines):
             raise ValueError(f"{repo}:{path} has only {len(lines)} lines, link asks for {b}")
@@ -38,7 +38,7 @@ def ref_info(table, ref, role):
     else:
         excerpt, more, span = [], 0, "whole file"
     return dict(url=url, role=role, repo=repo, path=path, span=span,
-                commit=r.commit[:9], excerpt=excerpt, more=more)
+                commit=f"{r.tag} ({r.commit[:7]})" if r.tag else r.commit[:9], excerpt=excerpt, more=more)
 
 
 def is_word(ch):
