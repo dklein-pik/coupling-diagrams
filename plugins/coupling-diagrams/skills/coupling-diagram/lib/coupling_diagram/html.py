@@ -169,6 +169,13 @@ def write(path, prims, W, H, table, title="Coupling diagram", note_xy=None, auth
 const REFS = {json.dumps(refs, ensure_ascii=False).replace("</", "<\\/")};
 const tip = document.getElementById("tip");
 const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+// fit the figure to the window in fixed px, so that browser zoom enlarges it; refit only on real
+// window resizes (zoom changes devicePixelRatio, a resize does not)
+const wrap = document.getElementById("wrap");
+let dpr = devicePixelRatio;
+const fit = () => wrap.style.width = Math.min({W}, document.documentElement.clientWidth - 20) + "px";
+fit();
+addEventListener("resize", () => {{ if (devicePixelRatio === dpr) fit(); dpr = devicePixelRatio; }});
 function show(ev) {{
   const r = REFS[+ev.currentTarget.dataset.ref];
   let h = `<div class="hd"><span class="role">${{r.role}}</span> &middot; <b>${{esc(r.repo + "/" + r.path)}}</b> ${{r.span}} &middot; @ ${{r.commit}}</div>`;
